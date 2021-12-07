@@ -1,6 +1,7 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
+import { TextField, Button, Typography } from "@mui/material";
 
 const endpoint = "http://localhost:5000";
 const socket = io(endpoint);
@@ -24,7 +25,7 @@ function App() {
   };
 
   const onClick = () => {
-    if (message != "") {
+    if (message !== "") {
       socket.emit("message", message);
       setMessage("");
     } else {
@@ -33,15 +34,29 @@ function App() {
   };
 
   return (
-    <div className='App'>
+    <div className='App' style={{ marginTop: 20 }}>
       {messages.length > 0 &&
         messages.map((msg) => (
           <div>
-            <p>{msg}</p>
+            <Typography variant='h6'>{msg}</Typography>
           </div>
         ))}
-      <input value={message} name='message' onChange={(e) => onChange(e)} />
-      <button onClick={() => onClick()}>Send Message</button>
+      <TextField
+        id='standard-textarea'
+        value={message}
+        name='message'
+        onChange={(e) => onChange(e)}
+        label='Enter your Message!'
+        placeholder='Placeholder'
+        multiline
+        variant='standard'
+        style={{ marginTop: "200px", marginBottom: "20px" }}
+      />
+      <div>
+        <Button variant='contained' onClick={onClick}>
+          Send
+        </Button>
+      </div>
     </div>
   );
 }
